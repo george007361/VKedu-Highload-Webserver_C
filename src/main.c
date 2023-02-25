@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "http.h"
 #include "server.h"
 
 void h(int s) {
   printf("Handler!!!\n");
+  int *p = malloc(sizeof(int));
+  *p = s;
+  http_handler(p);
   close(s);
 }
 
