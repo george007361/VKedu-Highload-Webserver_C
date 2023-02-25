@@ -1,2 +1,8 @@
-# hl-web-server-c
-VKTech bmstu: Highload hw #2: web server. Language: C, pattern: thread-per-request
+# Highload
+ Веб-сервер
+> Язык: Си
+
+> thread-per-request
+
+
+## Георгий Илларионов, Web-31
