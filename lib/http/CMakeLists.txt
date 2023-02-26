@@ -4,6 +4,13 @@ src/http_head.c
 src/http_parse_request.c
 src/http_handler.c
 src/http_read_request.c
+src/http_unknown_method.c
+src/http_forbidden.c
+src/http_not_found.c
+src/http_close_safe.c
+src/http_create_path.c
+src/http_internal_error.c
+src/flength.c
 )
 add_library(http STATIC ${HTTP_LIB_SOURCES})
 

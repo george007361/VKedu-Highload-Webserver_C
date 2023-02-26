@@ -27,6 +27,7 @@ int http_parse_request(request *req, char *raw, const ssize_t len) {
     return HTTP_ERROR;
   }
   req->type[type_len] = '\0';
+  DEB("\tRequest type: %s\n", req->type);
 
   // Достать URI
   char *uri_start = type_end + 1;
@@ -41,6 +42,7 @@ int http_parse_request(request *req, char *raw, const ssize_t len) {
     return HTTP_ERROR;
   }
   req->uri[uri_len] = '\0';
+  DEB("\tRequest URI: %s\n", req->uri);
 
   return HTTP_SUCCESS;
 }

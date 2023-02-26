@@ -2,6 +2,8 @@
 
 #define REQ_TYPE_IS(val) !strcmp(req.type, val)
 
+
+
 void http_handler(int *client_socket) {
   int sock = *client_socket;
   DEB("http[http_handler()]: Socket %d\n", sock);
@@ -9,7 +11,8 @@ void http_handler(int *client_socket) {
   // Read request from socket
   char req_raw[HTTP_REQUEST_MAX_LEN_BYTES];
 
-  ssize_t req_raw_len = http_read_request(req_raw, HTTP_REQUEST_MAX_LEN_BYTES, sock);
+  ssize_t req_raw_len =
+      http_read_request(req_raw, HTTP_REQUEST_MAX_LEN_BYTES, sock);
   if (req_raw_len < 1) {
     fprintf(stderr, "http[http_handler()]: error while receiving request\n");
     return;
@@ -24,11 +27,14 @@ void http_handler(int *client_socket) {
 
   if (REQ_TYPE_IS(HTTP_GET)) {
     // Get request
-    http_get(&req);
+    http_get(sock, &req);
   } else if (REQ_TYPE_IS(HTTP_HEAD)) {
     // Head request
-    http_head(&req);
+    http_head(sock, &req);
   } else {
     // Unknown type
+    http_unknown_method(sock, &req);
   }
+
+  http_close_safe(sock, 10);
 }
