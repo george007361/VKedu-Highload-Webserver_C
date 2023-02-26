@@ -1,5 +1,3 @@
-#include <time.h>
-
 #include "http.h"
 
 int http_forbidden(int sock) {

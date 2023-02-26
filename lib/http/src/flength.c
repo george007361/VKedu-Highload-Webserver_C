@@ -1,8 +1,7 @@
+
 #include "http.h"
 
-#include <sys/stat.h>
-
-long flength(FILE *file) {
+off_t flength(FILE *file) {
   int fd = fileno(file);
   if (fd < 0) {
     perror("flength(): ");
@@ -14,6 +13,5 @@ long flength(FILE *file) {
     perror("flenght(): ");
     return HTTP_ERROR;
   }
-
-  return (long)file_stat.st_size;
+  return file_stat.st_size;
 }

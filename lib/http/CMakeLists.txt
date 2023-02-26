@@ -11,6 +11,8 @@ src/http_close_safe.c
 src/http_create_path.c
 src/http_internal_error.c
 src/flength.c
+src/fsend_mmap.c
+src/fsend_buff.c
 )
 add_library(http STATIC ${HTTP_LIB_SOURCES})
 

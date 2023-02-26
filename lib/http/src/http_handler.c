@@ -1,6 +1,5 @@
 #include "http.h"
 
-#define REQ_TYPE_IS(val) !strcmp(req.type, val)
 
 
 
@@ -33,7 +32,7 @@ void http_handler(int *client_socket) {
     http_head(sock, &req);
   } else {
     // Unknown type
-    http_unknown_method(sock, &req);
+    http_unknown_method(sock);
   }
 
   http_close_safe(sock, 10);

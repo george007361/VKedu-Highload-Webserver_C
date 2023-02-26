@@ -1,4 +1,3 @@
-#include <sys/mman.h>
 
 #include "http.h"
 
@@ -41,7 +40,9 @@ int http_get(int sock, request *req) {
   // TODO: get content type
 
   // Get file len
-  long file_len = flength(file);
+  off_t file_len = flength(file);
+  DEB("\tfile_len(): %jd\n", file_len);
+
   if (file_len == HTTP_ERROR) {
     fprintf(stderr, "http[http_get()]: Can't get length of file\n");
     fclose(file);
@@ -73,34 +74,12 @@ int http_get(int sock, request *req) {
   }
 
   // Send content
-  int fd = -1;
-  if ((fd = fileno(file)) < 0) {
-    fprintf(stderr, "http[http_get()]: Getting fd error\n");
+  if (fsend_buff(sock, file) != HTTP_SUCCESS) {
+    fprintf(stderr, "http[http_get()]: Can't send file\n");
     fclose(file);
     return HTTP_ERROR;
   }
-
-  void *adr = mmap(NULL, file_len, PROT_READ, MAP_SHARED, fd, 0);  // i get the
-  if (!adr) {
-    perror("http[http_get()]: ");
-    fclose(file);
-    return HTTP_ERROR;
-  }
-
-  ssize_t bytes_payload = send(sock, adr, file_len, 0);
-  if (bytes_payload < file_len) {
-    fprintf(stderr, "http[http_get()]: Sending file missed %ld bytes\n",
-            file_len - bytes_payload);
-
-    fclose(file);
-    munmap(adr, file_len);
-    return HTTP_ERROR;
-  }
-
-  //
 
   fclose(file);
-  munmap(adr, file_len);
-
   return HTTP_SUCCESS;
 }

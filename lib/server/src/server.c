@@ -48,6 +48,7 @@ int server_worker(server *serv) {
              client_sock);
       if (serv->handler) {
         serv->handler(client_sock);
+        break;
       } else {
         printf("Server[connection-manager]: No handler provided\n");
         close(client_sock);
