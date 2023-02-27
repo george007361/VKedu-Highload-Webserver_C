@@ -14,7 +14,12 @@ src/flength.c
 src/fsend_mmap.c
 src/fsend_buff.c
 src/http_decode_uri.c
+src/http_content_type.c
+# src/http_content_type_magic.c
 )
+
 add_library(http STATIC ${HTTP_LIB_SOURCES})
 
 target_include_directories(http PUBLIC include)
+
+# target_link_libraries(http magic)

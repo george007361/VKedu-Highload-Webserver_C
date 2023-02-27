@@ -38,7 +38,29 @@ int http_get(int sock, request *req) {
 
   // If opened successfully
 
-  // TODO: get content type
+  // get content type
+  // struct timeval start;
+  // gettimeofday(&start, NULL);
+
+  char *content_type;
+  if (http_content_type(&content_type, abs_path) != HTTP_SUCCESS) {
+    fprintf(stderr, "http[http_get()]: Can't get content-type of file\n");
+    fclose(file);
+    return HTTP_ERROR;
+  }
+
+  // char content_type[32];
+  // if (http_content_type_magic(content_type, abs_path) != HTTP_SUCCESS) {
+  //   fprintf(stderr, "http[http_get()]: Can't get content-type of file\n");
+  //   fclose(file);
+  //   return HTTP_ERROR;
+  // }
+
+  // struct timeval stop;
+  // gettimeofday(&stop, NULL);
+
+  // DEB("time: %ld\n",
+      // 1000000 * (stop.tv_sec - start.tv_sec) + stop.tv_usec - start.tv_usec);
 
   // Get file len
   off_t file_len = flength(file);
@@ -55,9 +77,9 @@ int http_get(int sock, request *req) {
 
   int bytes = snprintf(responce, HTTP_RESPONCE_HEADERS_LEN_BYTES,
                        HEADER_STATUS HEADER_SERVER HEADER_DATE HEADER_CONNECTION
-                           HEADER_CONTENT_LENGTH CRLF,
+                           HEADER_CONTENT_LENGTH HEADER_CONTENT_TYPE CRLF,
                        STATUS_OK, MESSAGE_OK, SERVER_NAME, time(NULL),
-                       CONNECTION_CLOSE, file_len);
+                       CONNECTION_CLOSE, file_len, content_type);
 
   //   DEB("\tResponce:\n%s %d\n\t------\n", responce, bytes);
 

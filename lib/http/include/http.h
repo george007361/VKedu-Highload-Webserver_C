@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #define FSEND_BUFF_BYTES 4096
@@ -84,5 +84,6 @@ int http_not_found(int sock);
 int http_parse_request(request *req, char *raw, const ssize_t len);
 ssize_t http_read_request(char *buff, const ssize_t buff_len, int sock);
 int http_unknown_method(int sock);
+int http_content_type(char **content_type, char *uri);
 
 #endif  // HTTP_SERVER_H_
