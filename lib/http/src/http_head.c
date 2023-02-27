@@ -20,7 +20,7 @@ int http_head(int sock, request *req) {
     switch (errno) {
       default: {
         perror("http[http_head()]: ");
-        return http_internal_error(sock);
+        return HTTP_ERROR;
       }
 
       case ENOTDIR:

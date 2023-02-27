@@ -13,6 +13,7 @@ src/http_internal_error.c
 src/flength.c
 src/fsend_mmap.c
 src/fsend_buff.c
+src/http_decode_uri.c
 )
 add_library(http STATIC ${HTTP_LIB_SOURCES})
 

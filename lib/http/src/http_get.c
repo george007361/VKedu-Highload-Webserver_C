@@ -21,7 +21,8 @@ int http_get(int sock, request *req) {
     switch (errno) {
       default: {
         perror("http[http_get()]: ");
-        return http_internal_error(sock);
+        // return http_internal_error(sock);
+        return HTTP_ERROR;
       }
 
       case ENOTDIR:
