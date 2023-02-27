@@ -7,18 +7,10 @@
 
 #define DEBUG
 
-void handler_middleware(int client_socket) {
-  int *p = malloc(sizeof(int));
-  *p = client_socket;
-  http_handler(p);
-  free(p);
-  close(client_socket);
-}
-
 int main(void) {
-  printf("Hello web server!\n");
+  printf("Hello async web server!\n");
 
-  server *serv = server_init(8003, 1000, handler_middleware);
+  server *serv = server_init(8003, 1000, http_handler);
 
   server_run(serv);
 

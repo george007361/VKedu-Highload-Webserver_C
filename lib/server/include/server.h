@@ -10,14 +10,17 @@
 #define DEB(...)
 #endif
 
+#include "thread_pool.h"
+
 typedef struct server {
   int sock;
   int max_conn;
-  void (*handler)(int);
+  thread_pool *pool;
+  void (*handler)(int *);
 } server;
 
 server *server_init(const unsigned short port, const int max_conn,
-                    void (*handler)(int));
+                    void (*handler)(int *));
 void server_destroy(server *serv);
 int server_run(server *serv);
 void server_stop(server *serv);

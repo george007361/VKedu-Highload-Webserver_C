@@ -47,7 +47,11 @@ int server_worker(server *serv) {
       printf("Server[connection-manager]: New connection to socket %d\n",
              client_sock);
       if (serv->handler) {
-        serv->handler(client_sock);
+        int *ptr_client_sock = (int *)malloc(sizeof(int));
+        *ptr_client_sock = client_sock;
+        thread_pool_add_task(serv->pool, serv->handler,
+                             (void *)ptr_client_sock);
+        // serv->handler(client_sock);
         // break;
       } else {
         printf("Server[connection-manager]: No handler provided\n");
@@ -68,10 +72,13 @@ int server_run(server *serv) {
   return server_worker(serv);
 }
 
-void server_stop(server *serv) { shutdown(serv->sock, SHUT_RDWR); }
+void server_stop(server *serv) {
+  shutdown(serv->sock, SHUT_RDWR);
+  thread_pool_wait(serv->pool, POOL_STOP_WAIT);
+}
 
 server *server_init(const unsigned short port, const int max_conn,
-                    void (*handler)(int)) {
+                    void (*handler)(int *)) {
   if (!handler) {
     fprintf(stderr, "server_init(): handler not provided\n");
     return NULL;
@@ -87,6 +94,13 @@ server *server_init(const unsigned short port, const int max_conn,
   serv->max_conn = max_conn;
   serv->sock = server_create_sock(port);
 
+  serv->pool = thread_pool_init();
+  if (!serv->pool) {
+    fprintf(stderr, "server_init(): Cant allocate mem for server\n");
+    free(serv);
+    return NULL;
+  }
+
   if (serv->sock < 0) {
     fprintf(stderr, "server_init(): Cant open socket for server\n");
     free(serv);
@@ -101,7 +115,7 @@ void server_destroy(server *serv) {
     return;
   }
   server_stop(serv);
+  thread_pool_destroy(serv->pool, POOL_STOP_NOW);
   close(serv->sock);
-
   free(serv);
 }

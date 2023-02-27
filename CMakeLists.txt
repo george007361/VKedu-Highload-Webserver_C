@@ -18,4 +18,4 @@ add_subdirectory(lib/thread_pool)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
-target_link_libraries(${PROJECT_NAME} server http)
+target_link_libraries(${PROJECT_NAME} server http )
