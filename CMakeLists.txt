@@ -13,6 +13,7 @@ add_subdirectory(src)
 
 add_subdirectory(lib/server)
 add_subdirectory(lib/http)
+add_subdirectory(lib/cqueue)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
