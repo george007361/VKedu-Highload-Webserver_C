@@ -6,6 +6,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDART_REQURED ON)
 
+if(DEBUG)
+    add_compile_definitions(DEBUG)
+endif(DEBUG)
+
 
 add_compile_options(-Wall -Wextra -pedantic -fPIC)
 

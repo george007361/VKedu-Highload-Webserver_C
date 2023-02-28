@@ -1,6 +1,5 @@
 #include "thread_pool.h"
 
-
 void thread_pool_add_task(thread_pool *pool, void *(*routine)(void *),
                           void *args) {
   if (!pool) {

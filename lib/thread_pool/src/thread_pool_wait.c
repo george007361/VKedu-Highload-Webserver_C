@@ -13,7 +13,7 @@ void thread_pool_wait(thread_pool *pool, int timeout) {
   while (cqueue_size(&pool->task_queue) > 0 || pool->on_work > 0) {
     if (timeout > 0) {
       clock_gettime(CLOCK_REALTIME, &now);
-      DEB("---Waiting tasks by timeout. Remaining time: %d---\n",
+      DEB("---Waiting tasks by timeout. Remaining time: %ld---\n",
           wait_until.tv_sec - now.tv_sec);
       if (wait_until.tv_sec - now.tv_sec <= 0) {
         DEB("---Waiting tasks stopped by timeout---\n");

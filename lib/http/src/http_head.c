@@ -37,7 +37,7 @@ int http_head(int sock, request *req) {
   // If opened successfully
 
   // get content type
-  char *content_type;
+  const char *content_type;
   if (http_content_type(&content_type, abs_path) != HTTP_SUCCESS) {
     fprintf(stderr, "http[http_head()]: Can't get content-type of file\n");
     fclose(file);

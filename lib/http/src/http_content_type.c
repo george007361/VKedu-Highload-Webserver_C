@@ -15,7 +15,7 @@ static const struct content_type content_types[] = {
     {"image/gif", {"gif", NULL}},
     {"application/x-shockwave-flash", {"swf", NULL}}};
 
-int http_content_type(char **content_type, char *uri) {
+int http_content_type(const char **content_type, char *uri) {
   if (!uri && !content_type) {
     fprintf(stderr, "http[http_content_type()]: Invalid arguments\n");
     return HTTP_ERROR;

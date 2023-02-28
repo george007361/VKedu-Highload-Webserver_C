@@ -1,26 +1,13 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
+#include "server_internal.h"
+
 #define SERVER_ERROR -1
 #define SERVER_OK 0
 
-#ifdef DEBUG
-#define DEB printf
-#else
-#define DEB(...)
-#endif
-
-#include "thread_pool.h"
-
-typedef struct server {
-  int sock;
-  int max_conn;
-  thread_pool *pool;
-  void (*handler)(int *);
-} server;
-
 server *server_init(const unsigned short port, const int max_conn,
-                    void (*handler)(int *));
+                    const int max_threads, void *(*handler)(int *));
 void server_destroy(server *serv);
 int server_run(server *serv);
 void server_stop(server *serv);

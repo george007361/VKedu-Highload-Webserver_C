@@ -10,8 +10,8 @@ void *thread_pool_manager(void *vpool) {
       return NULL;
     }
 
-    while (pool->on_work == MAX_THREADS || cqueue_size(&pool->task_queue) == 0) {
-      if (pool->on_work == MAX_THREADS) {
+    while (pool->on_work == pool->max_threads || cqueue_size(&pool->task_queue) == 0) {
+      if (pool->on_work == pool->max_threads) {
         DEB("Manager: All threads are busy. Waiting...\n");
         pthread_cond_wait(&pool->sig_vacant_thread, &pool->mu);
       }

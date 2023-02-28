@@ -1,6 +1,6 @@
 #include "http.h"
 
-const int HTTP_ROOT_DIR_LEN = strlen(HTTP_ROOT_DIR);
+const int HTTP_ROOT_DIR_LEN = sizeof(HTTP_ROOT_DIR);
 
 int http_create_path(char *path, char *uri) {
   path[0] = '\0';

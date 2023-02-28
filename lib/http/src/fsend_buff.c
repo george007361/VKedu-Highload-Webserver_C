@@ -16,7 +16,7 @@ int fsend_buff(int sock, FILE *file) {
   off_t off = 0;
 
   while (off < file_len) {
-    size_t buff_len =
+    ssize_t buff_len =
         file_len - off < FSEND_BUFF_BYTES ? file_len - off : FSEND_BUFF_BYTES;
     void *buff = mmap(NULL, buff_len, PROT_READ, MAP_SHARED | MAP_NORESERVE, fd,
                       off); 

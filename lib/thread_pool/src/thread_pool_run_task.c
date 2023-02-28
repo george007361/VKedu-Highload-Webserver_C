@@ -36,8 +36,8 @@ void thread_pool_run_task(thread_pool *pool, task_t *task) {
   }
 
   ++pool->on_work;
-  DEB("thread_pool_run_task(): Tasks on work %d, waiting: %d\n", pool->on_work,
-      queue_size(&pool->task_queue));
+  DEB("thread_pool_run_task(): Tasks on work %d, waiting: %ld\n", pool->on_work,
+      cqueue_size(&pool->task_queue));
 
   pthread_mutex_unlock(&pool->mu);
 }

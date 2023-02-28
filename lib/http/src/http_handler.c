@@ -1,6 +1,6 @@
 #include "http.h"
 
-void http_handler(int *client_socket) {
+void *http_handler(int *client_socket) {
   int sock = *client_socket;
   DEB("http[http_handler()]: Socket %d\n", sock);
 
@@ -15,17 +15,17 @@ void http_handler(int *client_socket) {
 
     http_close_safe(sock, 10);
 
-    return;
+    return NULL;
   }
 
   // Parse request string
   request req;
-  if (http_parse_request(&req, req_raw, req_raw_len) != HTTP_SUCCESS) {
+  if (http_parse_request(&req, req_raw) != HTTP_SUCCESS) {
     fprintf(stderr, "http[http_handler()]: error while parsing request\n");
     http_internal_error(sock);
     http_close_safe(sock, 10);
 
-    return;
+    return NULL;
   }
 
   // decode uri
@@ -37,7 +37,7 @@ void http_handler(int *client_socket) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
 
-      return;
+      return NULL;
     }
   } else if (REQ_TYPE_IS(HTTP_HEAD)) {
     // Head request
@@ -45,7 +45,7 @@ void http_handler(int *client_socket) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
 
-      return;
+      return NULL;
     }
   } else {
     // Unknown type
@@ -53,9 +53,10 @@ void http_handler(int *client_socket) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
 
-      return;
+      return NULL;
     }
   }
 
   http_close_safe(sock, 10);
+  return NULL;
 }

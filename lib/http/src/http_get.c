@@ -42,7 +42,7 @@ int http_get(int sock, request *req) {
   // struct timeval start;
   // gettimeofday(&start, NULL);
 
-  char *content_type;
+  const char *content_type;
   if (http_content_type(&content_type, abs_path) != HTTP_SUCCESS) {
     fprintf(stderr, "http[http_get()]: Can't get content-type of file\n");
     fclose(file);

@@ -1,6 +1,6 @@
 #include "http.h"
 
-int http_parse_request(request *req, char *raw, const ssize_t len) {
+int http_parse_request(request *req, char *raw) {
   if (!req) {
     fprintf(stderr, "http[parse_request()]: request ptr is NULL\n");
     return HTTP_ERROR;
