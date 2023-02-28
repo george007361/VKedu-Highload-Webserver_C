@@ -55,3 +55,4 @@ build/
 .vscode/
 gen/
 *.log
+http-test-suite-master/

@@ -4,7 +4,8 @@
 #include "http_internal.h"
 
 #define SERVER_NAME "hl-web-server"
-#define HTTP_ROOT_DIR "/home/gg/Desktop/TP-3-sem/HL-Web-server-GIT"
+// #define HTTP_ROOT_DIR "/home/gg/Desktop/TP-3-sem/HL-Web-server-GIT"
+#define HTTP_ROOT_DIR "/home/gg/Desktop/TP-3-sem/HL-Web-server-GIT/http-test-suite-master"
 #define HTTP_DIR_INDEX "index.html"
 
 #define HTTP_ERROR -1

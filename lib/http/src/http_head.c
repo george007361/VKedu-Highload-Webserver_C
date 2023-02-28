@@ -37,7 +37,7 @@ int http_head(int sock, request *req) {
   // If opened successfully
 
   // get content type
-  const char *content_type;
+  char *content_type;
   if (http_content_type(&content_type, abs_path) != HTTP_SUCCESS) {
     fprintf(stderr, "http[http_head()]: Can't get content-type of file\n");
     fclose(file);
@@ -57,7 +57,7 @@ int http_head(int sock, request *req) {
 
   int bytes = snprintf(responce, HTTP_RESPONCE_HEADERS_LEN_BYTES,
                        HEADER_STATUS HEADER_SERVER HEADER_DATE HEADER_CONNECTION
-                           HEADER_CONTENT_LENGTH HEADER_CONTENT_TYPE CRLF CRLF,
+                           HEADER_CONTENT_LENGTH HEADER_CONTENT_TYPE CRLF,
                        STATUS_OK, MESSAGE_OK, SERVER_NAME, time(NULL),
                        CONNECTION_CLOSE, file_len, content_type);
 

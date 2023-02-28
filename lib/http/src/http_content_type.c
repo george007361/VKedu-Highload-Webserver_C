@@ -13,7 +13,8 @@ static const struct content_type content_types[] = {
     {"image/png", {"png", NULL}},
     {"image/jpeg", {"jpeg", "jpg", NULL}},
     {"image/gif", {"gif", NULL}},
-    {"application/x-shockwave-flash", {"swf", NULL}}};
+    {"application/x-shockwave-flash", {"swf", NULL}},
+    {NULL, NULL}};
 
 int http_content_type(const char **content_type, char *uri) {
   if (!uri && !content_type) {
@@ -43,6 +44,7 @@ int http_content_type(const char **content_type, char *uri) {
       // }
     }
   }
+      // DEB("\t++++++++%d\n", found);
 
   if (!found) {
     *content_type = unknown_content_type;

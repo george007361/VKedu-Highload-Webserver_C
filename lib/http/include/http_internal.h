@@ -24,12 +24,12 @@
 #define HTTP_HEAD "HEAD"
 
 // Response headers
-#define HEADER_STATUS "HTTP/1.1 %d %s\n"
-#define HEADER_SERVER "Server: %s\n"
-#define HEADER_DATE "Date: %ld\n"
-#define HEADER_CONNECTION "Connection: %s\n"
-#define HEADER_CONTENT_TYPE "Content-Type: %s\n"
-#define HEADER_CONTENT_LENGTH "Content-Length: %ld\n"
+#define HEADER_STATUS "HTTP/1.1 %d %s\r\n"
+#define HEADER_SERVER "Server: %s\r\n"
+#define HEADER_DATE "Date: %ld\r\n"
+#define HEADER_CONNECTION "Connection: %s\r\n"
+#define HEADER_CONTENT_TYPE "Content-Type: %s\r\n"
+#define HEADER_CONTENT_LENGTH "Content-Length: %ld\r\n"
 #define CRLF "\r\n"
 
 #define CONNECTION_CLOSE "close"
