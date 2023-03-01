@@ -22,8 +22,15 @@ int http_content_type(const char **content_type, char *uri) {
     return HTTP_ERROR;
   }
 
-  char *ptr_dot;
-  if (!(ptr_dot = strchr(uri, '.'))) {
+  char *ptr_slash = strrchr(uri, '/');
+  if (!ptr_slash) {
+    fprintf(stderr, "http[http_content_type()]: Invalid URI: no slash\n");
+    return HTTP_ERROR;
+  }
+
+  char *ptr_dot = strrchr(uri, '.');
+  if (!ptr_dot || ptr_dot < ptr_slash) {
+    DEB("http[http_content_type()]: It is bin file. ptr_dot - ptr_slash = %d\n", ptr_dot - ptr_slash);
     *content_type = unknown_content_type;
     return HTTP_SUCCESS;
   }
@@ -44,7 +51,7 @@ int http_content_type(const char **content_type, char *uri) {
       // }
     }
   }
-      // DEB("\t++++++++%d\n", found);
+  // DEB("\t++++++++%d\n", found);
 
   if (!found) {
     *content_type = unknown_content_type;
