@@ -13,7 +13,7 @@ src/http_internal_error.c
 src/flength.c
 src/fsend_mmap.c
 src/fsend_buff.c
-src/http_decode_uri.c
+src/http_decode_request.c
 src/http_content_type.c
 # src/http_content_type_magic.c
 )

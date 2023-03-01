@@ -29,7 +29,7 @@ void *http_handler(int *client_socket) {
   }
 
   // decode uri
-  http_decode_uri(req.uri);
+  http_decode_request(&req);
 
   if (REQ_TYPE_IS(HTTP_GET)) {
     // Get request

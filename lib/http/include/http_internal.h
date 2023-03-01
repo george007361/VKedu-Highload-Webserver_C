@@ -52,9 +52,11 @@
 
 #define HTTP_METHOD_MAX_LEN_BYTES 8
 #define HTTP_URI_MAX_LEN_BYTES 128
+#define HTTP_QUERY_MAX_LEN_BYTES 64
 typedef struct request {
   char type[HTTP_METHOD_MAX_LEN_BYTES];
   char uri[HTTP_URI_MAX_LEN_BYTES];
+  char query[HTTP_QUERY_MAX_LEN_BYTES];
 } request;
 
 extern const int HTTP_ROOT_DIR_LEN;
@@ -83,6 +85,6 @@ int http_unknown_method(int sock);
 ssize_t http_read_request(char *buff, const ssize_t buff_len, int sock);
 int http_parse_request(request *req, char *raw);
 void http_close_safe(int sock, int timeout);
-int http_decode_uri(char *uri);
+int http_decode_request(request *req);
 
 #endif  // HTTP_INTERNAL_H_
