@@ -19,6 +19,7 @@ add_subdirectory(lib/server)
 add_subdirectory(lib/http)
 add_subdirectory(lib/cqueue)
 add_subdirectory(lib/thread_pool)
+add_subdirectory(lib/logger)
 
 add_executable(${PROJECT_NAME} src/main.c)
 
