@@ -1,9 +1,6 @@
 #ifndef CQUEUE_INTERNAL_H_
 #define CQUEUE_INTERNAL_H_
 
-#include <unistd.h>
-#include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 struct cqueue_node_t {

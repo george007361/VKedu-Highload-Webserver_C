@@ -10,15 +10,13 @@ int http_unknown_method(int sock) {
       STATUS_METHOD_NOT_ALLOWED, MESSAGE_METHOD_NOT_ALLOWED, SERVER_NAME,
       time(NULL), CONNECTION_CLOSE);
 
-//   DEB("\tResponce:\n%s %d\n\t------\n", responce, bytes);
-
   if (!bytes) {
-    perror("http[http_unknown_type()]: ");
+    L_ERR_THR("http", "unknown_method", strerror(errno));
     return HTTP_ERROR;
   }
 
   if (send(sock, responce, bytes, 0) < bytes) {
-    perror("http[http_unknown_type()]: ");
+    L_ERR_THR("http", "unknown_method", strerror(errno));
     return HTTP_ERROR;
   }
 

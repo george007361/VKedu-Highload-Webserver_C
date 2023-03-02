@@ -6,6 +6,8 @@
 #define SERVER_ERROR -1
 #define SERVER_OK 0
 
+#define SERVER_MAX_CONN_DEF 100
+
 server *server_init(const unsigned short port, const int max_conn,
                     const int max_threads, void *(*handler)(int *));
 void server_destroy(server *serv);

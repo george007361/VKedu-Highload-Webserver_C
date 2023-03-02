@@ -12,4 +12,4 @@ add_library(thread_pool STATIC ${THREAD_POOL_LIB_SOURCES})
 
 target_include_directories(thread_pool PUBLIC include)
 
-target_link_libraries(thread_pool cqueue)
+target_link_libraries(thread_pool cqueue logger)

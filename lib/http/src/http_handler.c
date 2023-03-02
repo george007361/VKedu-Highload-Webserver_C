@@ -2,7 +2,9 @@
 
 void *http_handler(int *client_socket) {
   int sock = *client_socket;
-  DEB("http[http_handler()]: Socket %d\n", sock);
+  L_DEB_THR("http", "handler", "Client socket: %i", sock);
+
+  SET_TIMER
 
   // Read request from socket
   char req_raw[HTTP_REQUEST_MAX_LEN_BYTES];
@@ -10,32 +12,41 @@ void *http_handler(int *client_socket) {
   ssize_t req_raw_len =
       http_read_request(req_raw, HTTP_REQUEST_MAX_LEN_BYTES, sock);
   if (req_raw_len < 1) {
-    fprintf(stderr, "http[http_handler()]: error while receiving request\n");
-    http_internal_error(sock);
+    L_ERR_THR("http", "handler", "Error while receiving request");
 
+    http_internal_error(sock);
     http_close_safe(sock, 10);
 
+    TIME_IT("handler", "");
     return NULL;
   }
 
   // Parse request string
   request req;
   if (http_parse_request(&req, req_raw) != HTTP_SUCCESS) {
-    fprintf(stderr, "http[http_handler()]: error while parsing request\n");
+    L_ERR_THR("http", "handler", "Error while parsing request");
+
     http_internal_error(sock);
     http_close_safe(sock, 10);
 
+    TIME_IT("handler", "");
     return NULL;
   }
 
-  // decode uri
-  http_decode_request(&req);
+  // decode request
+  if (http_decode_request(&req) != HTTP_SUCCESS) {
+    L_ERR_THR("http", "handler", "Error while decoding request");
+    TIME_IT("handler", "");
+    return NULL;
+  }
 
   if (REQ_TYPE_IS(HTTP_GET)) {
     // Get request
     if (http_get(sock, &req) != HTTP_SUCCESS) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
+
+      TIME_IT("handler", "");
 
       return NULL;
     }
@@ -44,6 +55,7 @@ void *http_handler(int *client_socket) {
     if (http_head(sock, &req) != HTTP_SUCCESS) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
+      TIME_IT("handler", "");
 
       return NULL;
     }
@@ -52,11 +64,14 @@ void *http_handler(int *client_socket) {
     if (http_unknown_method(sock) != HTTP_SUCCESS) {
       http_internal_error(sock);
       http_close_safe(sock, 10);
+      TIME_IT("handler", "");
 
       return NULL;
     }
   }
 
   http_close_safe(sock, 10);
+  TIME_IT("handler", "");
+
   return NULL;
 }

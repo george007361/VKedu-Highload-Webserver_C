@@ -6,14 +6,7 @@ void *thread_pool_worker(void *varg) {
 
   arg->task->routine(arg->task->args);
 
-  if (pthread_mutex_lock(&arg->pool->mu)) {
-    fprintf(stderr, "thread_pool_worker(): Cant lock mutex\n");
-    free(arg->task->args);
-    free(arg->task);
-    free(arg);
-    // free(varg);
-    return NULL;
-  }
+  pthread_mutex_lock(&arg->pool->mu);
 
   --arg->pool->on_work;
 
@@ -24,7 +17,6 @@ void *thread_pool_worker(void *varg) {
   free(arg->task->args);
   free(arg->task);
   free(arg);
-  // free(varg);
 
   return NULL;
 }

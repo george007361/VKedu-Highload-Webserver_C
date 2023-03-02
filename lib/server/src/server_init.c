@@ -2,33 +2,43 @@
 
 server *server_init(const unsigned short port, const int max_conn,
                     const int max_threads, void *(*handler)(int *)) {
-  if (!handler) {
-    fprintf(stderr, "server_init(): handler not provided\n");
-    return NULL;
-  }
+  L_INFO("server", "init", "Creating server");
 
   server *serv = (server *)malloc(sizeof(server));
   if (!serv) {
-    fprintf(stderr, "server_init(): Cant allocate mem for server\n");
+    L_ERR("server", "init", "Can't allocate memory for server");
     return NULL;
   }
 
+  if (!handler) {
+    L_ERR("server", "init", "Request handler not provided");
+    free(serv);
+    return NULL;
+  }
   serv->handler = handler;
-  serv->max_conn = max_conn;
+
+  if (max_conn < 1) {
+    L_INFO("server", "init", "Max connections not provided, using default",
+           SERVER_MAX_CONN_DEF);
+    serv->max_conn = SERVER_MAX_CONN_DEF;
+  } else {
+    serv->max_conn = max_conn;
+  }
+
   serv->sock = server_create_sock(port);
+  if (serv->sock < 0) {
+    L_ERR("server", "init", "Can't create server socket");
+    free(serv);
+    return NULL;
+  }
 
   serv->pool = thread_pool_init(max_threads);
   if (!serv->pool) {
-    fprintf(stderr, "server_init(): Cant create thread pool\n");
+    L_ERR("server", "init", "Can't create thread pool for server");
     free(serv);
     return NULL;
   }
 
-  if (serv->sock < 0) {
-    fprintf(stderr, "server_init(): Cant open socket for server\n");
-    free(serv);
-    return NULL;
-  }
-
+  L_DEB("server", "init", "Creating server success");
   return serv;
 }

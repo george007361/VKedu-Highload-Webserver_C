@@ -11,4 +11,4 @@ add_library(server STATIC ${SERVER_LIB_SOURCES})
 
 target_include_directories(server PUBLIC include)
 
-target_link_libraries(server thread_pool)
+target_link_libraries(server thread_pool logger)

@@ -1,7 +1,7 @@
 #include "logger.h"
 
-void LOG(FILE* stream, const int log_level, const int flags,
-         const char* pkg_name, const char* func_name, const char* fmt, ...) {
+void logger(FILE* stream, const int log_level, const int flags,
+            const char* pkg_name, const char* func_name, const char* fmt, ...) {
   if (!fmt) {
     return;
   }
@@ -16,10 +16,23 @@ void LOG(FILE* stream, const int log_level, const int flags,
   }
 
   if (log_level_name) {
-    fprintf(stream, "[%s] ", log_level_name);
+    switch (log_level) {
+      case LV_ERROR: {
+        fprintf(stream, "\x1B[31m[%s]\033[0m ", log_level_name);
+        break;
+      }
+      case LV_INFO: {
+        fprintf(stream, "\x1B[34m[%s]\033[0m ", log_level_name);
+        break;
+      }
+      default: {
+        fprintf(stream, "[%s] ", log_level_name);
+        break;
+      }
+    }
   }
 
-  if (flags == LOG_THREAD) {
+  if (flags == FL_THREAD) {
     fprintf(stream, "[thread: %lu] ", pthread_self());
   }
 
@@ -37,6 +50,7 @@ void LOG(FILE* stream, const int log_level, const int flags,
     va_start(args, fmt);
     vfprintf(stream, fmt, args);
     va_end(args);
+    fprintf(stream, "\n");
   } else {
     fprintf(stream, "%s\n", fmt);
   }

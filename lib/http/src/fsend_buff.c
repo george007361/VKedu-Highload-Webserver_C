@@ -7,7 +7,7 @@ int fsend_buff(int sock, FILE *file) {
     return HTTP_ERROR;
   }
 
-  long file_len = flength(file);
+  long file_len = http_file_length(file);
   if (file_len == HTTP_ERROR) {
     fprintf(stderr, "http[fsend_buff()]: Can't get length of file\n");
     return HTTP_ERROR;

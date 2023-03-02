@@ -1,16 +1,13 @@
 #include "http.h"
 
-const int HTTP_ROOT_DIR_LEN = sizeof(HTTP_ROOT_DIR);
-
 int http_create_full_path(char *dest, char *uri) {
   dest[0] = '\0';
-  if (!strcat(dest, HTTP_ROOT_DIR) || !strcat(dest, uri)) {
-    perror("http[http_fopen()]: ");
+  if (!strncat(dest, HTTP_DOCUMENT_ROOT, HTTP_FILE_PATH_MAX_LEN) ||
+      !strncat(dest, uri, HTTP_FILE_PATH_MAX_LEN - strlen(dest))) {
+    L_ERR_THR("http", "create_full_path", strerror(errno));
     return HTTP_ERROR;
   };
 
-  
-  DEB("\t\tFULL PATH: %s\n", dest);
-
+  L_DEB_THR("http", "create_full_path", "Full path is %s", dest);
   return HTTP_SUCCESS;
 }

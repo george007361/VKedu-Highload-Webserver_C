@@ -9,13 +9,7 @@
 #include <unistd.h>
 
 #include "cqueue.h"
-
-
-#ifdef DEBUG
-#define DEB printf
-#else
-#define DEB(...)
-#endif
+#include "logger.h"
 
 typedef struct {
   cqueue task_queue;
@@ -42,4 +36,4 @@ void *thread_pool_worker(void *varg);
 void thread_pool_run_task(thread_pool *pool, task_t *task);
 void *thread_pool_manager(void *vpool);
 
-#endif // THREAD_POOL_INTERNAL_H_
+#endif  // THREAD_POOL_INTERNAL_H_

@@ -2,7 +2,6 @@
 
 void cqueue_destroy(cqueue *q, void (*item_destroyer)(void *)) {
   if (!q) return;
-  //   if(!q->top) return;
 
   while (q->top) {
     cqueue_node_t *tmp = q->top;

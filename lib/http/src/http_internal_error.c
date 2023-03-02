@@ -1,4 +1,3 @@
-
 #include "http.h"
 
 int http_internal_error(int sock) {
@@ -10,15 +9,13 @@ int http_internal_error(int sock) {
       STATUS_INTERNAL_ERROR, MESSAGE_INTERNAL_ERROR, SERVER_NAME, time(NULL),
       CONNECTION_CLOSE);
 
-  //   DEB("\tResponce:\n%s %d\n\t------\n", responce, bytes);
-
   if (!bytes) {
-    perror("http[http_internal_error()]: ");
+    L_ERR_THR("http", "internal_error", strerror(errno));
     return HTTP_ERROR;
   }
 
   if (send(sock, responce, bytes, 0) < bytes) {
-    perror("http[http_internal_error()]: ");
+    L_ERR_THR("http", "internal_error", strerror(errno));
     return HTTP_ERROR;
   }
 

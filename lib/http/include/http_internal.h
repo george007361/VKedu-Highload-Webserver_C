@@ -3,7 +3,6 @@
 
 #include <errno.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
@@ -11,13 +10,18 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef DEBUG
-#define DEB printf
-#else
-#define DEB(...)
-#endif
+#include "logger.h"
 
-#define REQ_TYPE_IS(val) !strcmp(req.type, val)
+// Config 
+#define HTTP_REQUEST_MAX_LEN_BYTES 256
+#define HTTP_RESPONCE_HEADERS_LEN_BYTES 256
+
+#define HTTP_METHOD_MAX_LEN_BYTES 8
+#define HTTP_URI_MAX_LEN_BYTES 128
+#define HTTP_QUERY_MAX_LEN_BYTES 64
+
+#define FSEND_BUFF_BYTES 4096
+#define HTTP_FILE_PATH_MAX_LEN 256
 
 // Supported types
 #define HTTP_GET "GET"
@@ -50,20 +54,17 @@
 #define STATUS_INTERNAL_ERROR 500
 #define MESSAGE_INTERNAL_ERROR "Internal Server Error"
 
-#define HTTP_METHOD_MAX_LEN_BYTES 8
-#define HTTP_URI_MAX_LEN_BYTES 128
-#define HTTP_QUERY_MAX_LEN_BYTES 64
 typedef struct request {
   char type[HTTP_METHOD_MAX_LEN_BYTES];
   char uri[HTTP_URI_MAX_LEN_BYTES];
   char query[HTTP_QUERY_MAX_LEN_BYTES];
 } request;
 
-extern const int HTTP_ROOT_DIR_LEN;
+static const int HTTP_DOCUMENT_ROOT_LEN = sizeof(HTTP_DOCUMENT_ROOT);
 
 // Funcs for working with file
 int http_create_full_path(char *dest, char *uri);
-off_t flength(FILE *file);
+off_t http_file_length(FILE *file);
 int fsend_buff(int sock, FILE *file);
 int fsend_mmap(int sock, FILE *file);
 int http_content_type(const char **content_type, char *uri);
@@ -72,9 +73,6 @@ int http_check_root_escaping(char *resolved_path);
 int http_create_index_path(char *path);
 
 // Processors for HTTP resposes
-#define HTTP_RESPONCE_HEADERS_LEN_BYTES 256
-#define FSEND_BUFF_BYTES 4096
-
 int http_get(int sock, request *req);
 int http_head(int sock, request *req);
 int http_forbidden(int sock);
@@ -83,11 +81,34 @@ int http_not_found(int sock);
 int http_unknown_method(int sock);
 
 // Request processors
-#define HTTP_REQUEST_MAX_LEN_BYTES 128
-
 ssize_t http_read_request(char *buff, const ssize_t buff_len, int sock);
 int http_parse_request(request *req, char *raw);
 void http_close_safe(int sock, int timeout);
 int http_decode_request(request *req);
+
+
+#define REQ_TYPE_IS(val) !strcmp(req.type, val)
+
+#ifdef HTTP_TIME_IT
+#include "sys/time.h"
+#include "time.h"
+
+#define SET_TIMER       \
+  struct timeval start; \
+  gettimeofday(&start, NULL);
+
+#define TIME_IT(func, timer_name)                                      \
+  {                                                                    \
+    struct timeval stop;                                               \
+    gettimeofday(&stop, NULL);                                         \
+    L_INFO_THR("http", func, "Timer %s: %ld us", timer_name,           \
+               1000000 * (stop.tv_sec - start.tv_sec) + stop.tv_usec - \
+                   start.tv_usec);                                     \
+  }
+
+#else
+#define SET_TIMER void;
+#define TIME_IT(...)
+#endif
 
 #endif  // HTTP_INTERNAL_H_

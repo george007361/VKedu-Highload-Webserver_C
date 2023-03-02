@@ -5,7 +5,6 @@
 int cqueue_push(cqueue *q, void *ptr_item) {
   cqueue_node_t *new_node = (cqueue_node_t *)malloc(sizeof(cqueue_node_t));
   if (!new_node) {
-    perror("queue_push(): ");
     return EXIT_FAILURE;
   }
 

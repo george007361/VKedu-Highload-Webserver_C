@@ -10,12 +10,7 @@
 #include <unistd.h>
 
 #include "thread_pool.h"
-
-#ifdef DEBUG
-#define DEB printf
-#else
-#define DEB(...)
-#endif
+#include "logger.h"
 
 typedef struct server {
   int sock;

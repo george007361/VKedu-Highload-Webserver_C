@@ -1,4 +1,3 @@
-
 #include "http.h"
 
 int http_not_found(int sock) {
@@ -10,15 +9,13 @@ int http_not_found(int sock) {
       STATUS_NOT_FOUND, MESSAGE_NOT_FOUND, SERVER_NAME, time(NULL),
       CONNECTION_CLOSE);
 
-  //   DEB("\tResponce:\n%s %d\n\t------\n", responce, bytes);
-
   if (!bytes) {
-    perror("http[http_not_found()]: ");
+    L_ERR_THR("http", "not_found", strerror(errno));
     return HTTP_ERROR;
   }
 
   if (send(sock, responce, bytes, 0) < bytes) {
-    perror("http[http_not_found()]: ");
+    L_ERR_THR("http", "not_found", strerror(errno));
     return HTTP_ERROR;
   }
 

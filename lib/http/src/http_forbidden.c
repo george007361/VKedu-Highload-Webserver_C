@@ -9,15 +9,13 @@ int http_forbidden(int sock) {
       STATUS_FORBIDDEN, MESSAGE_FORBIDDEN, SERVER_NAME, time(NULL),
       CONNECTION_CLOSE);
 
-  //   DEB("\tResponce:\n%s %d\n\t------\n", responce, bytes);
-
   if (!bytes) {
-    perror("http[http_forbidden()]: ");
+    L_ERR_THR("http", "forbidden", strerror(errno));
     return HTTP_ERROR;
   }
 
   if (send(sock, responce, bytes, 0) < bytes) {
-    perror("http[http_forbidden()]: ");
+    L_ERR_THR("http", "forbidden", strerror(errno));
     return HTTP_ERROR;
   }
 

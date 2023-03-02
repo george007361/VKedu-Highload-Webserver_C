@@ -10,6 +10,17 @@ if(DEBUG)
     add_compile_definitions(DEBUG)
 endif(DEBUG)
 
+if(NO_INFO)
+    add_compile_definitions(NO_INFO)
+endif(NO_INFO)
+
+if(NO_ERR)
+    add_compile_definitions(NO_ERR)
+endif(NO_ERR)
+
+if(TIME_IT)
+    add_compile_definitions(HTTP_TIME_IT)
+endif(TIME_IT)
 
 add_compile_options(-Wall -Wextra -pedantic -fPIC)
 

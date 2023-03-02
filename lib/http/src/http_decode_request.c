@@ -1,11 +1,11 @@
 #include "http.h"
 
 int decode_string(char *str) {
-  DEB("\tdecode_string(): Encoded string: %s\n", str);
-
   int idx = 0;
   char *ptr_sym = str;
   char encoded_sym[] = "00";
+
+  L_DEB_THR("http", "decode_string", "Encoded string: %s", str);
 
   while (*ptr_sym != '\0') {
     if (*ptr_sym == '%') {
@@ -21,7 +21,8 @@ int decode_string(char *str) {
     ++ptr_sym;
   }
   str[idx] = '\0';
-  DEB("\tdecode_string(): Decoded string: %s\n", str);
+
+  L_DEB_THR("http", "decode_string", "Decoded string: %s", str);
 
   return HTTP_SUCCESS;
 }

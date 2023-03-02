@@ -8,7 +8,7 @@ int fsend_mmap(int sock, FILE *file) {
     return HTTP_ERROR;
   }
 
-  long file_len = flength(file);
+  long file_len = http_file_length(file);
   if (file_len == HTTP_ERROR) {
     fprintf(stderr, "http[fsend_mmap()]: Can't get length of file\n");
     return HTTP_ERROR;

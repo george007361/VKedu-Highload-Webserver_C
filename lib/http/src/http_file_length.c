@@ -1,17 +1,18 @@
 
 #include "http.h"
 
-off_t flength(FILE *file) {
+off_t http_file_length(FILE *file) {
   int fd = fileno(file);
   if (fd < 0) {
-    perror("flength(): ");
-    return HTTP_ERROR;
+    L_DEB("http", "file_length", strerror(errno));
+    return -1;
   }
 
   struct stat file_stat;
   if (fstat(fileno(file), &file_stat) < 0) {
-    perror("flenght(): ");
-    return HTTP_ERROR;
+    L_DEB("http", "file_length", strerror(errno));
+    return -1;
   }
+
   return file_stat.st_size;
 }
