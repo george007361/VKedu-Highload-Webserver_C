@@ -62,11 +62,14 @@ typedef struct request {
 extern const int HTTP_ROOT_DIR_LEN;
 
 // Funcs for working with file
-int http_create_path(char *path, char *uri);
+int http_create_full_path(char *dest, char *uri);
 off_t flength(FILE *file);
 int fsend_buff(int sock, FILE *file);
 int fsend_mmap(int sock, FILE *file);
 int http_content_type(const char **content_type, char *uri);
+int http_is_dir(char *path);
+int http_check_root_escaping(char *resolved_path);
+int http_create_index_path(char *path);
 
 // Processors for HTTP resposes
 #define HTTP_RESPONCE_HEADERS_LEN_BYTES 256

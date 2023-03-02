@@ -3,19 +3,52 @@
 
 int http_get(int sock, request *req) {
   if (!req) {
-    fprintf(stderr, "http[http_get()]: req ptr is NULL\n");
+    fprintf(stderr, "http[http_get()]: REQUEST is not provided\n");
     return HTTP_ERROR;
   }
 
-  // Create abs path
-  char abs_path[HTTP_URI_MAX_LEN_BYTES + HTTP_ROOT_DIR_LEN];
-  if (http_create_path(abs_path, req->uri) != HTTP_SUCCESS) {
-    fprintf(stderr, "http[http_get()]: Can't create absolute path to file\n");
+
+  // struct timeval start;
+  // gettimeofday(&start, NULL);
+
+  // Create full path
+  char full_path[HTTP_URI_MAX_LEN_BYTES + HTTP_ROOT_DIR_LEN];
+  if (http_create_full_path(full_path, req->uri) != HTTP_SUCCESS) {
+    fprintf(stderr, "http[http_get()]: Can't create full path to file\n");
     return HTTP_ERROR;
   }
+
+  // Check is dir
+  int is_dir = http_is_dir(full_path);
+
+  // Resolve relative parts of path
+  char *resolved_path[1024];
+  char *res = realpath(full_path, resolved_path);
+  DEB("\tResolved path %s\n", resolved_path);
+  if (!res) {
+    if (is_dir && errno != ENOTDIR) {
+      return http_forbidden(sock);
+    }
+
+    return http_not_found(sock);
+  }
+
+  // Check root escaping
+  if(http_check_root_escaping(resolved_path) != HTTP_SUCCESS) { 
+    return http_forbidden(sock);
+  }
+
+  // check if index file needed
+  if(is_dir){
+    if(http_create_index_path(full_path) != HTTP_SUCCESS){
+      return HTTP_ERROR;
+    }
+  }
+  DEB("\tFile path result: %s\n", full_path);
+
 
   // Try open file
-  FILE *file = fopen(abs_path, "rb");
+  FILE *file = fopen(full_path, "rb");
 
   if (!file) {
     switch (errno) {
@@ -27,6 +60,10 @@ int http_get(int sock, request *req) {
 
       case ENOTDIR:
       case ENOENT: {
+        if(is_dir){
+          return http_forbidden(sock);
+        }
+        
         return http_not_found(sock);
       }
 
@@ -39,11 +76,9 @@ int http_get(int sock, request *req) {
   // If opened successfully
 
   // get content type
-  // struct timeval start;
-  // gettimeofday(&start, NULL);
 
   const char *content_type;
-  if (http_content_type(&content_type, abs_path) != HTTP_SUCCESS) {
+  if (http_content_type(&content_type, full_path) != HTTP_SUCCESS) {
     fprintf(stderr, "http[http_get()]: Can't get content-type of file\n");
     fclose(file);
     return HTTP_ERROR;
@@ -56,11 +91,6 @@ int http_get(int sock, request *req) {
   //   return HTTP_ERROR;
   // }
 
-  // struct timeval stop;
-  // gettimeofday(&stop, NULL);
-
-  // DEB("time: %ld\n",
-      // 1000000 * (stop.tv_sec - start.tv_sec) + stop.tv_usec - start.tv_usec);
 
   // Get file len
   off_t file_len = flength(file);
@@ -104,5 +134,12 @@ int http_get(int sock, request *req) {
   }
 
   fclose(file);
+
+  //   struct timeval stop;
+  // gettimeofday(&stop, NULL);
+
+  // DEB("time: %ld microsecs\n",
+  // 1000000 * (stop.tv_sec - start.tv_sec) + stop.tv_usec - start.tv_usec);
+
   return HTTP_SUCCESS;
 }

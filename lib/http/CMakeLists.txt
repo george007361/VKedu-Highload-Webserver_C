@@ -8,13 +8,16 @@ src/http_unknown_method.c
 src/http_forbidden.c
 src/http_not_found.c
 src/http_close_safe.c
-src/http_create_path.c
+src/http_create_full_path.c
 src/http_internal_error.c
 src/flength.c
 src/fsend_mmap.c
 src/fsend_buff.c
 src/http_decode_request.c
 src/http_content_type.c
+src/http_is_dir.c
+src/http_check_root_escaping.c
+src/http_create_index_path.c
 # src/http_content_type_magic.c
 )
 
