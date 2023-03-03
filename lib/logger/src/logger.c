@@ -15,6 +15,8 @@ void logger(FILE* stream, const int log_level, const int flags,
     stream = *p->stream;
   }
 
+  fflush(stream);
+
   if (log_level_name) {
     switch (log_level) {
       case LV_ERROR: {
@@ -54,4 +56,5 @@ void logger(FILE* stream, const int log_level, const int flags,
   } else {
     fprintf(stream, "%s\n", fmt);
   }
+
 }

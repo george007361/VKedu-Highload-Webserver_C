@@ -24,7 +24,8 @@ void thread_pool_run_task(thread_pool *pool, task_t *task) {
   arg->task = task;
 
   if (pthread_create(&worker_thread, NULL, thread_pool_worker, (void *)arg)) {
-    L_ERR("thread_pool", "run_task", "Can't create thread for worker");
+    L_ERR("thread_pool", "run_task", "Can't create thread for worker: %s",
+          strerror(errno));
     free(arg);
     return;
   }
@@ -34,8 +35,8 @@ void thread_pool_run_task(thread_pool *pool, task_t *task) {
   ++pool->on_work;
 
   L_DEB("thread_pool", "run_task",
-        "Next task thread: %ld.\n\tTasks on work %d,\n\tTasks waiting: %ld\n", worker_thread,
-        pool->on_work, cqueue_size(&pool->task_queue));
+        "Next task thread: %ld.\n\tTasks on work %d,\n\tTasks waiting: %ld\n",
+        worker_thread, pool->on_work, cqueue_size(&pool->task_queue));
 
   pthread_mutex_unlock(&pool->mu);
 }

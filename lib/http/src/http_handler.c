@@ -1,7 +1,7 @@
 #include "http.h"
 
-void *http_handler(int *client_socket) {
-  int sock = *client_socket;
+void *http_handler(void *client_socket) {
+  int sock = *(int *)client_socket;
   L_DEB_THR("http", "handler", "Client socket: %i", sock);
 
   SET_TIMER

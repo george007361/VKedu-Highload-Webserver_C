@@ -18,6 +18,8 @@ src/http_content_type.c
 src/http_is_dir.c
 src/http_check_root_escaping.c
 src/http_create_index_path.c
+src/http_setup.c
+src/http_config.c
 )
 
 add_library(http STATIC ${HTTP_LIB_SOURCES})

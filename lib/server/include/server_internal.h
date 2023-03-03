@@ -16,7 +16,7 @@ typedef struct server {
   int sock;
   int max_conn;
   thread_pool *pool;
-  void *(*handler)(int *);
+  void *(*handler)(void *client_sock);
 } server;
 
 int server_create_sock(const unsigned short port);

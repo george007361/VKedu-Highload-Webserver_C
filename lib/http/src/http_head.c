@@ -7,7 +7,7 @@ int http_head(int sock, request *req) {
   }
 
   // Create full path
-  char full_path[HTTP_FILE_PATH_MAX_LEN];
+  char full_path[HTTP_PATH_MAX];
   if (http_create_full_path(full_path, req->uri) != HTTP_SUCCESS) {
     L_ERR_THR("http", "head", "Can't create full path to file");
     return HTTP_ERROR;
@@ -17,7 +17,7 @@ int http_head(int sock, request *req) {
   int is_dir = http_is_dir(full_path);
 
   // Resolve relative parts of path
-  char resolved_path[HTTP_FILE_PATH_MAX_LEN];
+  char resolved_path[HTTP_PATH_MAX];
   if (!realpath(full_path, resolved_path)) {
     if (is_dir && errno != ENOTDIR) {
       return http_forbidden(sock);
@@ -89,7 +89,7 @@ int http_head(int sock, request *req) {
   int bytes = snprintf(responce, HTTP_RESPONCE_HEADERS_LEN_BYTES,
                        HEADER_STATUS HEADER_SERVER HEADER_DATE HEADER_CONNECTION
                            HEADER_CONTENT_LENGTH HEADER_CONTENT_TYPE CRLF,
-                       STATUS_OK, MESSAGE_OK, SERVER_NAME, time(NULL),
+                       STATUS_OK, MESSAGE_OK, HTTP_SERVER_NAME, time(NULL),
                        CONNECTION_CLOSE, file_len, content_type);
 
   if (!bytes) {

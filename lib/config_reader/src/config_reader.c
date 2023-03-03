@@ -25,6 +25,10 @@ int config_read(config_field *conf, char *path) {
       return EXIT_FAILURE;
     }
 
+    if (buff[0] == '#') {
+      continue;
+    }
+
     char *sep = strchr(buff, ' ');
     size_t name_len = sep - buff;
 

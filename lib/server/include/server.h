@@ -9,7 +9,7 @@
 #define SERVER_MAX_CONN_DEF 100
 
 server *server_init(const unsigned short port, const int max_conn,
-                    const int max_threads, void *(*handler)(int *));
+                    const int max_threads, void *(*handler)(void *client_socket));
 void server_destroy(server *serv);
 int server_run(server *serv);
 void server_stop(server *serv);

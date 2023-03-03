@@ -1,8 +1,10 @@
 #ifndef HTTP_INTERNAL_H_
 #define HTTP_INTERNAL_H_
 
+#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
@@ -12,7 +14,7 @@
 
 #include "logger.h"
 
-// Config 
+// Config
 #define HTTP_REQUEST_MAX_LEN_BYTES 256
 #define HTTP_RESPONCE_HEADERS_LEN_BYTES 256
 
@@ -21,7 +23,22 @@
 #define HTTP_QUERY_MAX_LEN_BYTES 64
 
 #define FSEND_BUFF_BYTES 4096
-#define HTTP_FILE_PATH_MAX_LEN 256
+#define HTTP_PATH_MAX 256
+
+#define HTTP_SERV_NAME_MAX 32
+#define HTTP_INDEX_MAX 16
+
+
+typedef struct http_config {
+  char server_name[HTTP_SERV_NAME_MAX];
+  char document_root[HTTP_PATH_MAX];
+  char dir_index[HTTP_INDEX_MAX];
+} http_config_t;
+
+http_config_t http_config(http_config_t *set);
+#define HTTP_SERVER_NAME http_config(NULL).server_name
+#define HTTP_DOCUMENT_ROOT http_config(NULL).document_root
+#define HTTP_DIR_INDEX http_config(NULL).dir_index
 
 // Supported types
 #define HTTP_GET "GET"
@@ -85,7 +102,6 @@ ssize_t http_read_request(char *buff, const ssize_t buff_len, int sock);
 int http_parse_request(request *req, char *raw);
 void http_close_safe(int sock, int timeout);
 int http_decode_request(request *req);
-
 
 #define REQ_TYPE_IS(val) !strcmp(req.type, val)
 
