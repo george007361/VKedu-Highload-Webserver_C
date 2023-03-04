@@ -1,4 +1,4 @@
 clear
 rm -rf build/*
-cmake -B build -DDEBUG=0 -DNO_INFO=1 -DNO_ERR=0 -DTIME_IT=0
+cmake -B build -DDEBUG=0 -DNO_INFO=0 -DNO_ERR=0 -DTIME_IT=0
 make -C build

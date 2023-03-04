@@ -20,10 +20,19 @@ void thread_pool_run_task(thread_pool *pool, task_t *task) {
   }
 
   pthread_t worker_thread;
+  pthread_attr_t attr;
   arg->pool = pool;
   arg->task = task;
 
-  if (pthread_create(&worker_thread, NULL, thread_pool_worker, (void *)arg)) {
+  if (pthread_attr_init(&attr) ||
+      pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED)) {
+    L_ERR("thread_pool", "run_task", "Can't detach thread for worker: %s",
+          strerror(errno));
+    free(arg);
+    return;
+  }
+
+  if (pthread_create(&worker_thread, &attr, thread_pool_worker, (void *)arg)) {
     L_ERR("thread_pool", "run_task", "Can't create thread for worker: %s",
           strerror(errno));
     free(arg);

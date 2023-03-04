@@ -8,7 +8,7 @@ int server_worker(server *serv) {
     int client_sock = accept(serv->sock, (struct sockaddr *)&client_addr,
                              (socklen_t *)&client_addr_len);
     if (client_sock > 0) {
-      L_INFO("server", "worker", "New connection handled");
+      L_DEB("server", "worker", "New connection handled");
       if (serv->handler) {
         int *ptr_client_sock = (int *)malloc(sizeof(int));
         *ptr_client_sock = client_sock;

@@ -56,3 +56,4 @@ build/
 gen/
 *.log
 http-test-suite-master/
+test/

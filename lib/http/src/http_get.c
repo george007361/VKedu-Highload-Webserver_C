@@ -106,8 +106,8 @@ int http_get(int sock, request *req) {
     return HTTP_ERROR;
   }
 
-  // Send content
-  if (fsend_buff(sock, file) != HTTP_SUCCESS) {
+  // Send contentfsend_buff
+  if (http_fsend(sock, file) != HTTP_SUCCESS) {
     L_DEB_THR("http", "get", "Can't send file content: %s", strerror(errno));
     fclose(file);
     return HTTP_ERROR;

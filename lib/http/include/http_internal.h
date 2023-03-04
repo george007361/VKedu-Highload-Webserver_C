@@ -7,8 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <sys/sendfile.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -28,6 +30,7 @@
 #define HTTP_SERV_NAME_MAX 32
 #define HTTP_INDEX_MAX 16
 
+#define SEND_FILE_EAGAIN_TIMEOUT_US 200
 
 typedef struct http_config {
   char server_name[HTTP_SERV_NAME_MAX];
@@ -82,8 +85,9 @@ static const int HTTP_DOCUMENT_ROOT_LEN = sizeof(HTTP_DOCUMENT_ROOT);
 // Funcs for working with file
 int http_create_full_path(char *dest, char *uri);
 off_t http_file_length(FILE *file);
-int fsend_buff(int sock, FILE *file);
-int fsend_mmap(int sock, FILE *file);
+// int fsend_buff(int sock, FILE *file);
+// int fsend_mmap(int sock, FILE *file);
+int http_fsend(int sock, FILE *file);
 int http_content_type(const char **content_type, char *uri);
 int http_is_dir(char *path);
 int http_check_root_escaping(char *resolved_path);
