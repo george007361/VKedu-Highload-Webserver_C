@@ -34,23 +34,23 @@
    make clean 
    ```
    **Сборка в докере**
-    > Конфигурацию писать в `conf/httpd_docker.conf`, в контейнере сервер лежит в `/server/`
+   > Конфигурацию писать в `conf/httpd_docker.conf`, в контейнере сервер лежит в `/server/`
 
-    *Сборка и запуск*
-    ```
-    make docker-build
-    make docker-run
-    ```
-    > Запуск с выводом логов
-    > ```
-    > make docker-run-log
-    > ```
+   *Сборка и запуск*
+   ```
+   make docker-build
+   make docker-run
+   ```
+   > Запуск с выводом логов
+   > ```
+   > make docker-run-log
+   > ```
 
-    *Остановка и очистка:*
-    ```
-    make docker-stop
-    make docker-clean
-    ```
+   *Остановка и очистка:*
+   ```
+   make docker-stop
+   make docker-clean
+   ```
 
 ## Тестирование
 #### 1. Функциональное
