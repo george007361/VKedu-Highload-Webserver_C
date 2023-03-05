@@ -85,3 +85,12 @@ stress-test:
 
 func-test:
 	python3 ./tests/func/httptest.py
+
+style:
+	find -name "*.c" -o -name "*.h" | egrep -v "build|conf|tests" | xargs clang-format -i -style=Google
+
+clang-tidy:
+	find -name "*.c" -o -name "*.h" | egrep -v "build|conf|tests|http_close_safe_deb.c" | xargs clang-tidy -p ./build/compile_commands.json
+
+cppcheck:
+	find -name "*.c" -o -name "*.h" | egrep -v "build|conf|tests|http_close_safe_deb.c" | xargs cppcheck --enable=all --suppress=missingInclude --suppress=unusedFunction

@@ -14,9 +14,8 @@ int http_fsend(int sock, FILE *file) {
   }
 
   off_t offset = 0;
-  ssize_t bytes = 0;
   while (offset < file_len) {
-    bytes = sendfile(sock, fd, &offset, file_len - offset);
+    ssize_t bytes = sendfile(sock, fd, &offset, file_len - offset);
 
     if (bytes < 0) {
       if (errno != EAGAIN) {

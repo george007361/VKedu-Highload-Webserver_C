@@ -1,6 +1,5 @@
 #include "thread_pool.h"
 
-
 void *thread_pool_worker(void *varg) {
   worker_arg *arg = (worker_arg *)varg;
 

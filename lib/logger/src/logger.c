@@ -7,7 +7,7 @@ void logger(FILE* stream, const int log_level, const int flags,
   }
 
   const log_level_t* p;
-  for (p = log_levels; p->code && p->code != log_level; ++p)
+  for (p = log_levels; p->code && (p->code != log_level); ++p)
     ;
 
   char* log_level_name = p->msg;
@@ -56,5 +56,4 @@ void logger(FILE* stream, const int log_level, const int flags,
   } else {
     fprintf(stream, "%s\n", fmt);
   }
-
 }

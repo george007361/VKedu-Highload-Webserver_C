@@ -9,8 +9,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "thread_pool.h"
 #include "logger.h"
+#include "thread_pool.h"
 
 typedef struct server {
   int sock;

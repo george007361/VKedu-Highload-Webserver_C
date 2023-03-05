@@ -9,4 +9,4 @@ int cqueue_push(cqueue *q, void *ptr_item);
 void *cqueue_take(cqueue *q);
 size_t cqueue_size(const cqueue *q);
 
-#endif // CQUEUE_H_
+#endif  // CQUEUE_H_

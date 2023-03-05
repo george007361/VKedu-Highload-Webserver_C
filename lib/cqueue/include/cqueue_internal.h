@@ -16,4 +16,4 @@ typedef struct cqueue {
   size_t size;
 } cqueue;
 
-#endif // CQUEUE_INTERNAL_H_
+#endif  // CQUEUE_INTERNAL_H_

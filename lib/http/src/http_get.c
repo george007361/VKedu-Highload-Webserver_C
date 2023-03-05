@@ -77,12 +77,12 @@ int http_get(int sock, request *req) {
 
   // Get file len
   off_t file_len;
-  if((file_len = http_file_length(file)) < 0){
+  if ((file_len = http_file_length(file)) < 0) {
     L_ERR_THR("http", "get", "Can't get file length");
     fclose(file);
     return HTTP_ERROR;
   }
-  L_DEB_THR( "http", "get", "File length is %ld", file_len);
+  L_DEB_THR("http", "get", "File length is %ld", file_len);
 
   // Write response
   char responce[HTTP_RESPONCE_HEADERS_LEN_BYTES];

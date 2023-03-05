@@ -1,8 +1,10 @@
 #include "server.h"
 
 server *server_init(const unsigned short port, const int max_conn,
-                    const int max_threads, void *(*handler)(void *client_socket)) {
-  L_INFO("server", "init", "Creating server. Port: %u, Max worker threads: %i", port, max_threads);
+                    const int max_threads,
+                    void *(*handler)(void *client_socket)) {
+  L_INFO("server", "init", "Creating server. Port: %u, Max worker threads: %i",
+         port, max_threads);
 
   server *serv = (server *)malloc(sizeof(server));
   if (!serv) {

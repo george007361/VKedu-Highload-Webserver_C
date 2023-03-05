@@ -18,8 +18,8 @@ int fsend_buff(int sock, FILE *file) {
   while (off < file_len) {
     ssize_t buff_len =
         file_len - off < FSEND_BUFF_BYTES ? file_len - off : FSEND_BUFF_BYTES;
-    void *buff = mmap(NULL, buff_len, PROT_READ, MAP_SHARED | MAP_NORESERVE, fd,
-                      off); 
+    void *buff =
+        mmap(NULL, buff_len, PROT_READ, MAP_SHARED | MAP_NORESERVE, fd, off);
     if (!buff) {
       perror("http[fsend_buff()]: ");
       return HTTP_ERROR;

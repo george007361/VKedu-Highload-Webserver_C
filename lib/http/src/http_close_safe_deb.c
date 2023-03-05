@@ -1,5 +1,6 @@
-#include "http.h"
 #include <assert.h>
+
+#include "http.h"
 int haveInput(int fd, double timeout) {
   int status;
   fd_set fds;

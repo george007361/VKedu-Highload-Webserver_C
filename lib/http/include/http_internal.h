@@ -91,7 +91,7 @@ off_t http_file_length(FILE *file);
 // int fsend_buff(int sock, FILE *file);
 // int fsend_mmap(int sock, FILE *file);
 int http_fsend(int sock, FILE *file);
-int http_content_type(const char **content_type, char *uri);
+int http_content_type(const char **content_type, const char *uri);
 int http_is_dir(char *path);
 int http_check_root_escaping(char *resolved_path);
 int http_create_index_path(char *path);
@@ -116,7 +116,7 @@ int http_decode_request(request *req);
 #include "sys/time.h"
 #include "time.h"
 
-#define SET_TIMER(void)       \
+#define SET_TIMER(void) \
   struct timeval start; \
   gettimeofday(&start, NULL);
 
@@ -130,7 +130,7 @@ int http_decode_request(request *req);
   }
 
 #else
-#define SET_TIMER(void);
+#define SET_TIMER(void) ;
 #define TIME_IT(...)
 #endif
 

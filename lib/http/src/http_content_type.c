@@ -15,8 +15,8 @@ static const struct content_type content_types[] = {
     {"application/x-shockwave-flash", {"swf", NULL}},
     {NULL, NULL}};
 
-int http_content_type(const char **content_type, char *uri) {
-  if (!uri && !content_type) {
+int http_content_type(const char **content_type, const char *uri) {
+  if (!uri || !content_type) {
     L_ERR_THR("http", "content_type", "Invalid arguments");
     return HTTP_ERROR;
   }
@@ -29,9 +29,7 @@ int http_content_type(const char **content_type, char *uri) {
 
   char *ptr_dot = strrchr(uri, '.');
   if (!ptr_dot || ptr_dot < ptr_slash) {
-    L_DEB_THR("http", "content_type",
-              "It is bin file. ptr_dot - ptr_slash = %d\n",
-              ptr_dot - ptr_slash);
+    L_DEB_THR("http", "content_type", "It is bin file");
     *content_type = unknown_content_type;
     return HTTP_SUCCESS;
   }

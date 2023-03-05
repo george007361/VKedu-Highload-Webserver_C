@@ -15,7 +15,8 @@ int server_worker(server *serv) {
         thread_pool_add_task(serv->pool, serv->handler,
                              (void *)ptr_client_sock);
       } else {
-        L_INFO("server", "worker", "No handler provided to server. Closing connection");
+        L_INFO("server", "worker",
+               "No handler provided to server. Closing connection");
         close(client_sock);
       }
     }

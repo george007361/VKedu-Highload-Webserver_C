@@ -11,7 +11,9 @@ ssize_t http_read_request(char *buff, const ssize_t buff_len, int sock) {
   int r = select(sock + 1, &read_set, NULL, NULL, &timeout);
 
   if (r <= 0) {
-    L_ERR_THR("http", "read_request", "Socket reding state unavailable: errno=%i, msg: %s", errno, strerror(errno));
+    L_ERR_THR("http", "read_request",
+              "Socket reding state unavailable: errno=%i, msg: %s", errno,
+              strerror(errno));
     return -1;
   }
 
