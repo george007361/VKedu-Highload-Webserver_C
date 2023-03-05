@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(hl-web-server)
+project(hl-web-server C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_C_STANDARD 11)
@@ -23,8 +23,6 @@ if(TIME_IT)
 endif(TIME_IT)
 
 add_compile_options(-Wall -Wextra -pedantic -fPIC)
-
-add_subdirectory(src)
 
 add_subdirectory(lib/server)
 add_subdirectory(lib/http)

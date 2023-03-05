@@ -7,9 +7,10 @@
 
 int main(int argc, char **argv) {
   if (argc < 1) {
-    L_ERR(NULL, "main", "Config file not provided");
+    L_ERR(NULL, "main", "Configuration file not provided");
     return EXIT_FAILURE;
   }
+
   static config_field conf[] = {{"thread_limit", T_INT, NULL},
                                 {"connection_limit", T_INT, NULL},
                                 {"port", T_INT, NULL},
@@ -35,9 +36,19 @@ int main(int argc, char **argv) {
   server *serv = server_init(int__get_val(conf, "port"),
                              int__get_val(conf, "connection_limit"),
                              int__get_val(conf, "thread_limit"), http_handler);
-
   config_free(conf);
-  server_run(serv);
+
+  if (!serv) {
+    L_ERR(NULL, "main", "Server initialisation error");
+    return EXIT_FAILURE;
+  }
+
+  if (server_run(serv) != HTTP_SUCCESS) {
+    L_ERR(NULL, "main", "Can't run server");
+    server_destroy(serv);
+    return EXIT_FAILURE;
+  }
+
   server_destroy(serv);
   return EXIT_SUCCESS;
 }

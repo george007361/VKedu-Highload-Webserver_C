@@ -17,6 +17,9 @@
 #include "logger.h"
 
 // Config
+#define HTTP_WAIT_REQUEST_S 5
+#define HTTP_WAIT_REQUEST_US 0
+
 #define HTTP_REQUEST_MAX_LEN_BYTES 256
 #define HTTP_RESPONCE_HEADERS_LEN_BYTES 256
 

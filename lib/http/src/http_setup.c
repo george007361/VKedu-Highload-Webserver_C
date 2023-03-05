@@ -3,6 +3,7 @@
 int http_setup(const char *serv_name, const char *doc_root,
                const char *dir_idx) {
   http_config_t conf;
+  L_INFO("http", "setup", "Configuring http: Server name \"%s\", Document root: %s, Directory index: %s", serv_name, doc_root, dir_idx);
   if (!memcpy(conf.server_name, serv_name,
               strlen(serv_name) < HTTP_SERV_NAME_MAX ? HTTP_SERV_NAME_MAX
                                                      : strlen(serv_name)) ||

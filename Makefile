@@ -1,0 +1,87 @@
+
+.PHONY: 
+# for local
+	all \
+	build \
+	clean \
+	func-test \ 
+# for docker
+	docker-build \
+	docker-run \
+	docker-run-log \
+	docker-stop \
+	docker-clear \
+
+# stress test
+	stress-test \
+
+# nginx comparison
+	nginx-build \
+	nginx-run \
+	nginx-stop \
+	nginx-clear \
+
+# nginx all in one
+	nginx-stress
+
+all: 
+	make clean && \
+	make build
+
+build:
+	cmake -B build \
+	-DDEBUG=0 \
+	-DNO_INFO=0 \
+	-DNO_ERR=0 \
+	-DTIME_IT=0 \
+	&& \
+	make -C build
+
+clean:
+	rm -rf -f build/
+
+docker-build:
+	docker build -t hl-server_img .
+
+docker-run:
+	docker rm -f hl-server || true && \
+	docker run -d --name hl-server -p 80:80 hl-server_img
+
+docker-run-log:
+	docker rm -f hl-server || true && \
+	docker run --name hl-server -p 80:80 hl-server_img
+
+docker-stop:
+	docker stop hl-server || true
+
+docker-clear:
+	docker rm -f hl-server || true \
+	docker rmi -f hl-server_img || true
+
+nginx-build:
+	make nginx-clear && \
+	docker build -t hl-nginx_img ./tests/stress/nginx/
+
+nginx-run:
+	docker run -d --name hl-nginx -p 80:80 hl-nginx_img
+
+nginx-stop:
+	docker stop hl-nginx || true
+
+nginx-clear:
+	make nginx-stop && \
+	docker rm -f hl-nginx && \
+	docker rmi -f hl-nginx_img
+
+nginx-stress: 
+	make nginx-build && \
+	make nginx-run && \
+	sleep 2s && clear && \
+	make stress-test && \
+	make nginx-clear
+
+stress-test:
+	ab -n 20000 -c 100 http://127.0.0.1:80/
+
+func-test:
+	python3 ./tests/func/httptest.py
