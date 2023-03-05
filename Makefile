@@ -10,7 +10,7 @@
 	docker-run \
 	docker-run-log \
 	docker-stop \
-	docker-clear \
+	docker-clean \
 
 # stress test
 	stress-test \
@@ -19,7 +19,7 @@
 	nginx-build \
 	nginx-run \
 	nginx-stop \
-	nginx-clear \
+	nginx-clean \
 
 # nginx all in one
 	nginx-stress
@@ -54,12 +54,12 @@ docker-run-log:
 docker-stop:
 	docker stop hl-server || true
 
-docker-clear:
+docker-clean:
 	docker rm -f hl-server || true \
 	docker rmi -f hl-server_img || true
 
 nginx-build:
-	make nginx-clear && \
+	make nginx-clean && \
 	docker build -t hl-nginx_img ./tests/stress/nginx/
 
 nginx-run:
@@ -68,7 +68,7 @@ nginx-run:
 nginx-stop:
 	docker stop hl-nginx || true
 
-nginx-clear:
+nginx-clean:
 	make nginx-stop && \
 	docker rm -f hl-nginx && \
 	docker rmi -f hl-nginx_img
@@ -78,7 +78,7 @@ nginx-stress:
 	make nginx-run && \
 	sleep 2s && clear && \
 	make stress-test && \
-	make nginx-clear
+	make nginx-clean
 
 stress-test:
 	ab -n 20000 -c 100 http://127.0.0.1:80/
