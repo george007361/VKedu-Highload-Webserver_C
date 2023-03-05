@@ -5,6 +5,7 @@
 	build \
 	clean \
 	func-test \ 
+	
 # for docker
 	docker-build \
 	docker-run \
@@ -22,7 +23,12 @@
 	nginx-clean \
 
 # nginx all in one
-	nginx-stress
+	nginx-stress \
+
+# linters
+	style \
+	clang-tidy \
+	cppcheck
 
 all: 
 	make clean && \
