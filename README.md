@@ -41,7 +41,7 @@
    make docker-build
    make docker-run
    ```
-   > Запуск с выводом логов
+   > *Запуск с выводом логов*
    > ```
    > make docker-run-log
    > ```
