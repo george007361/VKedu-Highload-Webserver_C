@@ -4,7 +4,7 @@ void *http_handler(void *client_socket) {
   int sock = *(int *)client_socket;
   L_DEB_THR("http", "handler", "Client socket: %i", sock);
 
-  SET_TIMER
+  SET_TIMER()
 
   // Read request from socket
   char req_raw[HTTP_REQUEST_MAX_LEN_BYTES];

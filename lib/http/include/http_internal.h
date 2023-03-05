@@ -116,7 +116,7 @@ int http_decode_request(request *req);
 #include "sys/time.h"
 #include "time.h"
 
-#define SET_TIMER       \
+#define SET_TIMER(void)       \
   struct timeval start; \
   gettimeofday(&start, NULL);
 
@@ -130,7 +130,7 @@ int http_decode_request(request *req);
   }
 
 #else
-#define SET_TIMER void;
+#define SET_TIMER(void);
 #define TIME_IT(...)
 #endif
 
