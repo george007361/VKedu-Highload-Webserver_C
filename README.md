@@ -92,3 +92,25 @@
       ```
       make clang-tidy
       ```
+## Результаты стресс тестов
+> Тесты выполнялись в докер-контейнере \
+> Команда: ```ab -n 60000 -c 700 http://localhost:80/uri/to/test/file```
+ 
+### Веб-сервер
+> **Резултаты** \
+> Ось абсцисс - количество одновременно работающих тредов \
+> Ось ординат - RPS
+
+1. Проверка достаточно лёгкого сайта: ```/tests/nginx/site_example```
+   ![server_site_example](tests/results/server_site_example.jpg)
+2. Проверка достаточно тяжёлого сайта: ```/tests/func/httptest/wikipedia_russia.html```
+   ![server_wikipedia](tests/results/server_wikipedia.jpg)
+### Nginx
+> **Резултаты** \
+> Ось абсцисс - количество одновременно работающих воркеров \
+> Ось ординат - RPS
+
+1. Проверка достаточно лёгкого сайта: ```/tests/nginx/site_example```
+   ![nginx_site_example](tests/results/nginx_site_example.jpg)
+2. Проверка достаточно тяжёлого сайта: ```/tests/func/httptest/wikipedia_russia.html```
+   ![nginx_wikipedia](tests/results/nginx_wikipedia.jpg)
