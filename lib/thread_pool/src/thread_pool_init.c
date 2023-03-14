@@ -1,6 +1,6 @@
 #include "thread_pool.h"
 
-thread_pool *thread_pool_init(const int max_threads) {
+thread_pool *thread_pool_init(const int max_threads, const int max_queue) {
   L_INFO("thread_pool", "init", "Creating pool");
 
   thread_pool *pool = (thread_pool *)malloc(sizeof(thread_pool));
@@ -15,6 +15,7 @@ thread_pool *thread_pool_init(const int max_threads) {
   pool->task_queue = cqueue_create();
   pool->on_work = 0;
   pool->max_threads = max_threads < 1 ? MAX_THREADS_DEFAULT : max_threads;
+  pool->max_queue = max_queue < max_threads ? MAX_QUEUE_DEFAULT : max_queue;
 
   pthread_create(&pool->manager_thread, NULL, thread_pool_manager,
                  (void *)pool);

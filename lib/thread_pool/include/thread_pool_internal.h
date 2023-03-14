@@ -15,6 +15,7 @@ typedef struct {
   cqueue task_queue;
   int on_work;
   int max_threads;
+  int max_queue;
 
   pthread_t manager_thread;
   pthread_mutex_t mu;

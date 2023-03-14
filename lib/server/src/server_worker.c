@@ -12,8 +12,16 @@ int server_worker(server *serv) {
       if (serv->handler) {
         int *ptr_client_sock = (int *)malloc(sizeof(int));
         *ptr_client_sock = client_sock;
-        thread_pool_add_task(serv->pool, serv->handler,
-                             (void *)ptr_client_sock);
+        int st;
+        while ((st = thread_pool_add_task(serv->pool, serv->handler,
+                                          (void *)ptr_client_sock)) != ST_OK) {
+          if (st == ST_ERROR) {
+            close(client_sock);
+            break;
+          }
+
+          usleep(250);
+        }
       } else {
         L_INFO("server", "worker",
                "No handler provided to server. Closing connection");
